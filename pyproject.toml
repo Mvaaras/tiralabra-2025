@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "graphtraversal2025"
+version = "0.1.0"
+description = "Reittialgoritmien vertailu"
+authors = ["Mvaaras <mvaaras@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
