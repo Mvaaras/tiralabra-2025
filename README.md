@@ -1,13 +1,15 @@
 # Documentaatio
 
-[Docs menee tänne. Alkuun ainakin se #määrittelydokumentti]
+[Määrittelydokumentti](/documentation/Maarittely.md)
+Toteutusdokumentti
+Testausdokumentti
 
 ## Viikkokirjanpito
 
-[Kirjanpito menee tänne]
+[Viikko 1](documentation/Viikkoraportit/Viikko1.pdf)
 
 # Projektista
 
-[Varmaan linkki yksityiskohtaisempiin käyttö-ohjeisiin. En tiiä]
+[Varmaan linkki yksityiskohtaisempiin käyttö-ohjeisiin. En ole vielä varma]
 
 Ja sit plaaplaa
