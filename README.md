@@ -12,4 +12,4 @@ Testausdokumentti
 
 [Varmaan linkki yksityiskohtaisempiin käyttö-ohjeisiin. En ole vielä varma]
 
-Ja sit plaaplaa
+Vertailen kahta reitinhakualgoritmia.
