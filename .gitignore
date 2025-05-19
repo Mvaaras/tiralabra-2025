@@ -1,1 +1,3 @@
 documentation/Viikkoraportit/*.md
+__pycache__/
+.env
