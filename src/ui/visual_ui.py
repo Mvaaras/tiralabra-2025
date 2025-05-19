@@ -1,14 +1,10 @@
 import pygame
 from src.logic.mapreader import asciiKartta as kartta
+from src.logic.mapreader import luo_polusta
 
 # Reitinhaun visualisointi
 
-
-with open("src/assets/arena2.map") as f:
-    sourcemap = f.read()
-    f.close()
-
-ui_kartta = kartta(kartta=sourcemap, pikselikoko=4)
+ui_kartta = luo_polusta("src/assets/arena2.map",4)
 pixel_size = ui_kartta.pikselikoko
 
 pygame.init()
