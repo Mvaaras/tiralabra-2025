@@ -6,7 +6,9 @@ authors = ["Mvaaras <mvaaras@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.9,<4.0"
+pygame = "^2.6.1"
+pylint = "^3.3.7"
 
 
 [tool.poetry.group.dev.dependencies]
