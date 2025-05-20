@@ -16,6 +16,7 @@ Testausdokumentti
 
 Vertailen kahta reitinhakualgoritmia.
 
-Tällä hetkellä visualisaattori käynnistyy ajamalla:
-``` poetry shell
-python -m src.ui.visual_ui ```
+Tällä hetkellä A* algoritmia saa visualisoitua ajamalla:
+
+` poetry shell
+python -m src.index `
