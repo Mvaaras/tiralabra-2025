@@ -1,9 +1,8 @@
-
-import ui.visual_ui as ui
-import logic.mapreader as reader
-import algo.astar as astar
-import algo.jps as jps
+from ui import visual_ui as ui
+from algo import astar
+from algo import jps
 import logic.traversallogic as logic
+from logic import mapreader as reader
 
 #Käynnistys, kutsuu pääasiassa muita metodeja
 

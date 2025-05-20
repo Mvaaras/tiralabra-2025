@@ -1,5 +1,5 @@
 import pygame
-from src.logic.mapreader import asciiKartta as kartta
+from src.logic.mapreader import AsciiKartta as kartta
 from src.logic.mapreader import luo_polusta
 
 # Reitinhaun visualisointi
