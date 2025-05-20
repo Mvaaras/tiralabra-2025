@@ -2,7 +2,7 @@
 name = "astroid"
 version = "3.3.10"
 description = "An abstract syntax tree for Python with inference support."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.9.0"
 
@@ -13,7 +13,7 @@ typing-extensions = {version = ">=4", markers = "python_version < \"3.11\""}
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
-category = "main"
+category = "dev"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 
@@ -21,7 +21,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7
 name = "dill"
 version = "0.4.0"
 description = "serialize all of Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 
@@ -55,7 +55,7 @@ python-versions = ">=3.8"
 name = "isort"
 version = "6.0.1"
 description = "A Python utility / library to sort Python imports."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.9.0"
 
@@ -67,7 +67,7 @@ plugins = ["setuptools"]
 name = "mccabe"
 version = "0.7.0"
 description = "McCabe checker, plugin for flake8"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 
@@ -83,7 +83,7 @@ python-versions = ">=3.8"
 name = "platformdirs"
 version = "4.3.8"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a `user data dir`."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.9"
 
@@ -116,7 +116,7 @@ python-versions = ">=3.6"
 name = "pylint"
 version = "3.3.7"
 description = "python code static checker"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.9.0"
 
@@ -162,7 +162,7 @@ dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments
 name = "tomli"
 version = "2.2.1"
 description = "A lil' TOML parser"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 
@@ -170,7 +170,7 @@ python-versions = ">=3.8"
 name = "tomlkit"
 version = "0.13.2"
 description = "Style preserving TOML library"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 
@@ -178,14 +178,14 @@ python-versions = ">=3.8"
 name = "typing-extensions"
 version = "4.13.2"
 description = "Backported and Experimental Type Hints for Python 3.8+"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<4.0"
-content-hash = "e825d39036d32d5ecf645e4078a8933c13e0736499abe8ba472becf77c6a7418"
+content-hash = "66d8abf30097f197a7e2891016a576e520679879c9755d0e65f8954eefdc3ee9"
 
 [metadata.files]
 astroid = [
