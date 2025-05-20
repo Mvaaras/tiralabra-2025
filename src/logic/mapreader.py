@@ -1,7 +1,7 @@
 #Tulkitsee kartan muodon muille
 from math import sqrt
 
-DUMMYKARTTA = "type octile\nheight 5 \nwidth 5\nmap\n@@@@@\n@...@\n@..@@ \n@...@ \n@@@@@"
+DUMMYKARTTA = "type octile\nheight 5 \nwidth 5\nmap\n@@@@.\n....@\n@..@@\n@...@\n@.@@@"
 OLETUSVARIT = {
     "@":"black",
     ".":"white",
@@ -54,27 +54,27 @@ class AsciiKartta:
 
         # suorat järjestyksessä u r d l
         for suunta in ((0,-1),(1,0),(0,1),(-1,0)):
-            tutkittava_piste = (x-suunta[0],y-suunta[1])
+            tutkittava_piste = (x+suunta[0],y+suunta[1])
             if (-1 in tutkittava_piste or self.leveys == tutkittava_piste[0]
                 or self.korkeus == tutkittava_piste[1]):
                 continue
             if self.piste(tutkittava_piste) == ".":
-                suunnat.append(tutkittava_piste,1)
+                suunnat.append((tutkittava_piste,1))
 
         # kulmittaiset ur dr dl ul
         for suunta in ((1,-1),(1,1),(-1,1),(-1,-1)):
-            tutkittava_piste = (x-suunta[0],y-suunta[1])
+            tutkittava_piste = (x+suunta[0],y+suunta[1])
             if (-1 in tutkittava_piste or self.leveys == tutkittava_piste[0]
                 or self.korkeus == tutkittava_piste[1]):
                 continue
             if self.piste(tutkittava_piste[0],tutkittava_piste[1]) == ".":
-                suunnat.append(tutkittava_piste,sqrt(2))
+                suunnat.append((tutkittava_piste,sqrt(2)))
 
         return suunnat
 
     def vaihda_piste(self,x,y, char="*"):
         #vaihtaa pisteen arvon - oletuksena "*" jota käytetään vierailtuihin pisteisiin
-        self.karttadata[y] = self.karttadata[y][:x] + char + self.karttadata[x + 1:]
+        self.karttadata[y] = self.karttadata[y][:x] + char + self.karttadata[y][x + 1:]
 
     #käyttöliittymälle hyödylliset metodit
 
