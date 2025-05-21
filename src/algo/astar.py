@@ -2,30 +2,61 @@
 from math import sqrt
 from queue import PriorityQueue
 
-
 class AStar:
-    def __init__(self, alku, loppu, kartta):
+    def __init__(self, kartta,alku=(0,0),loppu=(0,0)):
         self.alku = alku
         self.loppu = loppu
         self.kartta = kartta
-        self.edellinen = {alku:"alku"}
+        self.edellinen = {}
+        self.lyhin_reitti_pisteeseen = {}
+        self.jonossa = {}
+    
+    def vaihda_alku(self,x,y=None):
+        self.alku = self._tarkista_piste(x,y)
+
+    def vaihda_loppu(self, x,y=None):
+        self.loppu = self._tarkista_piste(x,y)
+
+    def _tarkista_piste(self,x,y=None):
+        if y is None:
+            return x
+        return (x,y)
+
+    #Varsinainen algoritmin suoritus tapahtuu täällä
+
+    def aloita_astar(self):
+
+        self.edellinen = {self.alku:"alku"}
         self.lyhin_reitti_pisteeseen = {self.alku:0}
         self.jono = PriorityQueue()
-        self.jono.put((self.minimietaisyys(self.alku),alku))
-        self.jonossa = {alku:True}
-        self.paras_potentiaalinen_reitti = {self.alku:self.minimietaisyys(self.alku)}
+        self.jono.put((self.minimietaisyys(self.alku),self.alku))
+        self.jonossa = {self.alku:True}
+
+        #tarkistetaan ettei aloiteta tai lopeteta seinän sisään.
+        if (self.kartta.piste(self.alku) != "." 
+            or self.kartta.piste(self.loppu) != "."):
+            return []
+
+        return self.astar()
 
     def astar(self):
 
         while not self.jono.empty():
-            tutkittava_koko = self.jono.get()
-            tutkittava = tutkittava_koko[1]
+            #self.jonossa on aina oletettu maksimimatka loppupisteeseen jonka mukaan
+            #valitaan lupaavin piste tutkia, sekä piste itse.
+
+            #muuttujaan "tutkittava" tallennetaan ainoastaan piste.
+            tutkittava = self.jono.get()[1]
             self.jonossa[tutkittava] = False
             x = tutkittava[0]
             y = tutkittava[1]
+
+            #jos on saavutettu loppupiste, palautetaan löydetty reitti
             if tutkittava == self.loppu:
                 return self.palauta_reitti()
 
+            #haetaan tutkittavan pisteen naapurit ja läpikäydään ne. hae_suunnat palauttaa listan jossa 
+            #on tuplena pisteen koordinaatit (tuple) ja matka pisteeseen siirtymiseen (kulmittainen tai suora)
             naapurit = self.kartta.hae_suunnat(x,y)
             for naapuri in naapurit:
                 naapuri_piste = naapuri[0]
@@ -37,12 +68,13 @@ class AStar:
                         self.paivita_etaisyys(naapuri_piste,tutkittava,oletettu_etaisyys)
                 except:
                     self.paivita_etaisyys(naapuri_piste,tutkittava,oletettu_etaisyys)
-        print ("no route")
+        return []
+
+    #apumetodeja joita varsinainen algo kutsuu
 
     def paivita_etaisyys(self, piste, naapuri, etaisyys):
         self.edellinen[piste] = naapuri
         self.lyhin_reitti_pisteeseen[piste] = etaisyys
-        self.paras_potentiaalinen_reitti[piste] = etaisyys + self.minimietaisyys(piste)
         try:
             if not self.jonossa[piste]:
                 self.lisaa_jonoon(piste,etaisyys)

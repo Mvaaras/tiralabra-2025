@@ -16,7 +16,11 @@ Testausdokumentti
 
 Vertailen kahta reitinhakualgoritmia.
 
+
+
 Tällä hetkellä A* algoritmia saa visualisoitua ajamalla:
 
-` poetry shell
+`poetry shell
 python -m src.index `
+
+Tämän jälkeen aloitus-ja lopetuspisteitä voi vaihtaa kartalla klikkaamalla hiiren oikealla ja vasemmalla näppäimellä.

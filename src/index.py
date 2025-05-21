@@ -8,13 +8,13 @@ from .logic import mapreader as reader
 
 def main():
     kartta = reader.luo_polusta("src/assets/arena2.map",4)
-    testi_astar = astar.AStar((7,105),(235,177),kartta)
-    for point in testi_astar.astar():
+    testi_astar = astar.AStar(kartta,(7,105),(235,177))
+    """for point in testi_astar.aloita_astar():
         x =point[0]
         y = point[1]
-        kartta.vaihda_piste(x,y)
+        kartta.vaihda_piste(x,y)"""
     
-    ui.run_ui(kartta)
+    ui.run_ui(testi_astar)
     return
 
 if __name__ == "__main__":

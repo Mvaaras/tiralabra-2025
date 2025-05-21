@@ -25,6 +25,7 @@ class AsciiKartta:
         self.korkeus = int(karttalines[1].split()[1])
         self.leveys = int(karttalines[2].split()[1])
         self.karttadata = karttalines[4:]
+        self.kartta_alkuperainen = self.karttadata.copy()
 
         #käyttöliittymän määritykset
         if colors is None:
@@ -43,6 +44,9 @@ class AsciiKartta:
 
     def _hae_piste(self, x,y):
         return self.karttadata[y][x]
+
+    def flush(self):
+        self.karttadata = self.kartta_alkuperainen.copy()
 
 
     #reitinhaun hyödyntämät metodit - algoritmikäyttöön

@@ -1,5 +1,4 @@
 import pygame
-from src.logic.mapreader import AsciiKartta as kartta
 from src.logic.mapreader import luo_polusta
 
 # Reitinhaun visualisointi
@@ -31,7 +30,8 @@ def ui_testaus():
         pygame.display.flip() 
         clock.tick(60)  
 
-def run_ui(kartta):
+def run_ui(algo):
+    kartta = algo.kartta
     pixel_size = kartta.pikselikoko
     pygame.init()
 
@@ -44,6 +44,19 @@ def run_ui(kartta):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y =  pygame.mouse.get_pos()
+                oikea_x = x // pixel_size
+                oikea_y = y // pixel_size
+                napit = pygame.mouse.get_pressed()
+                if napit[0]:
+                    algo.vaihda_alku(oikea_x,oikea_y)
+                    kartta.flush()
+                if napit[2]:
+                    algo.vaihda_loppu(oikea_x,oikea_y)
+                    kartta.flush()
+                reitti = algo.aloita_astar()
+                piirra_reitti(kartta,reitti)
 
 
         screen.fill("white")
@@ -56,3 +69,9 @@ def run_ui(kartta):
 
         pygame.display.flip() 
         clock.tick(60)
+
+def piirra_reitti(kartta,reitti):
+    for point in reitti:
+        x = point[0]
+        y = point[1]
+        kartta.vaihda_piste(x,y)
