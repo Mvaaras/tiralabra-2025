@@ -89,10 +89,7 @@ class AStar:
     def minimietaisyys(self, a):
         x_etaisyys = abs(a[0]-self.loppu[0])
         y_etaisyys = abs(a[1]-self.loppu[1])
-        kokonaismatka = x_etaisyys + y_etaisyys
-        suoraan = abs(x_etaisyys-y_etaisyys)
-        vinosuuntaan = kokonaismatka-suoraan
-        return suoraan + (vinosuuntaan*(sqrt(2)))
+        return sqrt(x_etaisyys**2+y_etaisyys**2)
 
     def palauta_reitti(self):
         reitti = []
