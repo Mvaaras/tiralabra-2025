@@ -10,6 +10,8 @@ Testausdokumentti
 
 [Viikko 1](documentation/Viikkoraportit/Viikko1.pdf)
 
+[Viikko 2](documentation/Viikkoraportit/Viikko2.pdf)
+
 # Projektista
 
 [Varmaan linkki yksityiskohtaisempiin käyttö-ohjeisiin. En ole vielä varma]
