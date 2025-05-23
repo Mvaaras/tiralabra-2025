@@ -13,9 +13,8 @@ def main():
         x =point[0]
         y = point[1]
         kartta.vaihda_piste(x,y)"""
-    
+
     ui.run_ui(testi_astar)
-    return
 
 if __name__ == "__main__":
     main()

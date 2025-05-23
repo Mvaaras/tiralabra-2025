@@ -72,7 +72,7 @@ class AsciiKartta:
                 or self.korkeus == tutkittava_piste[1]):
                 continue
             if self.piste(tutkittava_piste[0],tutkittava_piste[1]) == ".":
-                suunnat.append((tutkittava_piste,sqrt(2)))
+                suunnat.append((tutkittava_piste,1))
 
         return suunnat
 

@@ -10,7 +10,8 @@ class AStar:
         self.edellinen = {}
         self.lyhin_reitti_pisteeseen = {}
         self.jonossa = {}
-    
+        self.jono = PriorityQueue()
+
     def vaihda_alku(self,x,y=None):
         self.alku = self._tarkista_piste(x,y)
 
@@ -33,7 +34,7 @@ class AStar:
         self.jonossa = {self.alku:True}
 
         #tarkistetaan ettei aloiteta tai lopeteta seinän sisään.
-        if (self.kartta.piste(self.alku) != "." 
+        if (self.kartta.piste(self.alku) != "."
             or self.kartta.piste(self.loppu) != "."):
             return []
 
@@ -55,8 +56,9 @@ class AStar:
             if tutkittava == self.loppu:
                 return self.palauta_reitti()
 
-            #haetaan tutkittavan pisteen naapurit ja läpikäydään ne. hae_suunnat palauttaa listan jossa 
-            #on tuplena pisteen koordinaatit (tuple) ja matka pisteeseen siirtymiseen (kulmittainen tai suora)
+            #haetaan tutkittavan pisteen naapurit ja läpikäydään ne. hae_suunnat palauttaa
+            #listan jossa on tuplena pisteen koordinaatit (tuple)
+            #ja matka pisteeseen siirtymiseen (kulmittainen tai suora)
             naapurit = self.kartta.hae_suunnat(x,y)
             for naapuri in naapurit:
                 naapuri_piste = naapuri[0]
@@ -66,7 +68,7 @@ class AStar:
                     etaisyys = self.lyhin_reitti_pisteeseen[naapuri_piste]
                     if etaisyys > oletettu_etaisyys :
                         self.paivita_etaisyys(naapuri_piste,tutkittava,oletettu_etaisyys)
-                except:
+                except KeyError:
                     self.paivita_etaisyys(naapuri_piste,tutkittava,oletettu_etaisyys)
         return []
 
@@ -78,13 +80,12 @@ class AStar:
         try:
             if not self.jonossa[piste]:
                 self.lisaa_jonoon(piste,etaisyys)
-        except:
+        except KeyError:
             self.lisaa_jonoon(piste,etaisyys)
-    
+
     def lisaa_jonoon(self, piste,etaisyys):
         self.jono.put((etaisyys+self.minimietaisyys(piste),piste))
         self.jonossa[piste] = True
-
 
     def minimietaisyys(self, a):
         x_etaisyys = abs(a[0]-self.loppu[0])
@@ -99,6 +100,3 @@ class AStar:
             piste = self.edellinen[piste]
         reitti.reverse()
         return reitti
-
-
-
