@@ -1,0 +1,24 @@
+Tässä dokumentissa pohdin, mitä kaikkea pitää ottaa huomioon että JPS toimii niin kuin pitäisi koska tämän sisäistäminen on minulle aika haastavaa.
+
+- Säännöt kulmittaiselle ja suoralle liikkeelle
+ * Aina ensin suoraan, sitten kulmittain
+ * Kun löytyy pakollinen naapuri, lopetetaan haku ja lisätään jonoon?
+- Edellisen pisteen suunta
+ * Tavallaan erilaiset kulmittain, koska kulmittain liikkuessa tarkistetaan aina ensin suorat
+ * Tutkimus tapahtuu aina samaan suuntaan ja pakolliset naapurit
+ * Aloituspisteessä ei ole edellistä suuntaa?
+  * Sillä, missä järjestyksessä suunnat tutkitaan ei pitäisi olla väliä alussa, koska kaikki löydetyt suunnat lisätään settiin?
+ * Edellisen pisteen suunnan saa dict edellinen joka on jo toteutettu A* algossa. Käytetään tupleja merkitsemään suuntia. Jos ei ole edellistä, tutkitaan kaikki
+ 
+ 
+---
+
+Directions musing:
+ 
+Say we're at (15,16), came from (14,16), so we are moving LEFT (x grows). Direction left is (1,0)
+
+We get direction by (15-14, 16-16) = (1,0)
+
+Direction is found by doing:
+
+(xn-xo, yn-yo)

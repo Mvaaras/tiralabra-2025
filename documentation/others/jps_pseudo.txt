@@ -1,0 +1,121 @@
+Halusin itse kokeilla kirjoittaa pseudokoodin JPS toiminnalle ennen kuin lähdin tekemään sitä pythonilla. Tässä on pseudokoodi johon olen perustanut itse koodiin kirjoitetun algoritmin. 
+
+Englanniksi, koska minulle helpompi kieli asianyhteydessä (ja lähteen pseudokoodi oli englanniksi), varsinainen koodi projektissa käyttää pääasiassa suomenkielisiä metodeita ja muuttujia.
+
+---------------------------------------------------------------------------------------------------------
+
+
+function reconstruct_path(cameFrom, current)
+    total_path := {current}
+    while current in cameFrom.Keys:
+        current := cameFrom[current]
+        total_path.prepend(current)
+    return total_path
+
+// JPS finds a path from start to goal.
+// h is the heuristic function. h(n) estimates the cost to reach goal from node n.
+function JPS(start, goal, h)
+    // The set of discovered nodes that may need to be (re-)expanded.
+    // Initially, only the start node is known.
+    // This is usually implemented as a min-heap or priority queue rather than a hash-set.
+    openSet := {start}
+
+    // For node n, cameFrom[n] is the node immediately preceding it on the cheapest path from the start
+    // to n currently known.
+    cameFrom := an empty map
+
+    // For node n, gScore[n] is the currently known cost of the cheapest path from start to n.
+    gScore := map with default value of Infinity
+    gScore[start] := 0
+
+    // For node n, fScore[n] := gScore[n] + h(n). fScore[n] represents our current best guess as to
+    // how cheap a path could be from start to finish if it goes through n.
+    fScore := map with default value of Infinity
+    fScore[start] := h(start)
+
+    while openSet is not empty
+        // This operation can occur in O(Log(N)) time if openSet is a min-heap or a priority queue
+        current := the node in openSet having the lowest fScore[] value
+        if current = goal
+            return reconstruct_path(cameFrom, current)
+
+        openSet.Remove(current)
+        
+        // we get the direction current came from. when current is the starting node,
+        // it has no direction and all diagonal directions are considered.
+        jumpDirections := pruneDirections(getDirection(cameFrom[current]), current)
+        
+        for each jumpDirection in jumpDirections
+            found_jumps := jumpAhead(jumpDirection,current)
+                for each jump in found_jumps
+		    // d(current,jump) is the weight of the edge from current to jump
+		    // tentative_gScore is the distance from start to the jump through current
+		    tentative_gScore := gScore[current] + d(current, jump)
+		    if tentative_gScore < gScore[jump]
+		        // This path to jump is better than any previous one. Record it!
+		        cameFrom[jump] := current
+		        gScore[jump] := tentative_gScore
+		        fScore[jump] := tentative_gScore + h(jump)
+		        if jump not in openSet
+		            openSet.add(jump)
+
+    // Open set is empty but goal was never reached
+    return failure
+    
+function jumpAhead(direction, jump_point)
+    if direction is diagonal:
+        return jumpAheadDiagonal(direction, jump_point)
+    return jumpAheadStraight(direction, jump_point)
+
+function jumpAheadDiagonal(direction, jump_point)
+    found_points := an empty list
+    end := False
+
+    // we explore the two non-diagonal directions of the direction given, ie. if going upleft
+    // diagonally, the directions explored here will be up and left respectively and 
+    // save all the points from there first.
+    for straight_direction in direction:
+        found_points.extend(jumpAheadStraight(straight_direction, jump_point))
+    
+    current_jump_point := jump_point
+    
+    // begin diagonal jump, keep going as long as we don't hit a wall or find a point of interest
+    while next cell in direction is traversable from current_jump_point:
+    	current_jump_point = getNextPoint(current_jump_point, direction)
+    	
+    	//first check if we've arrived at the goal
+    	if current_jump_point == goal
+    		return [current_jump_point]
+    	
+    	
+        // then we explore the horizontal directions for each step of the jump.
+        for straight_direction in direction
+            if jumpAheadStraight(straight_direction, current_jump_point) is not empty
+                found_points.add(current_jump_point)
+                end = True
+        //then check for diagonal forced neighbors
+        if checkForcedNeighborsDiagonal(current_jump_point) is not empty:
+            found_points.add(current_jump_point)
+            end = True
+        //if interesting points were reached, we end diagonal jump and return all found points.
+    	if end
+    	    return found_points
+    return found_points
+
+function jumpAheadStraight(direction, jump_point):
+    current_jump_point := jump_point
+    while next cell in direction is traversable from current_jump_point:
+        current_jump_point = getNextPoint(current_jump_point, direction)
+        //first check if we've arrived at the goal
+    	if current_jump_point == goal
+    		return [current_jump_point]
+    	//then check
+        if checkForcedNeighborsStraight(current_jump_point) is not empty
+            return [current_jump_point]
+            
+
+-------------------------------------------------------------------------
+
+Lähteet: 
+https://en.wikipedia.org/wiki/A*_search_algorithm#Pseudocode (A* pseudokoodi jota käytetty pohjana tälle pseudokoodille ja muokattu siitä)
+https://web.archive.org/web/20140310022652/https://zerowidth.com/2013/05/05/jump-point-search-explained.html (jps selitys jota hyödynnettiin)
