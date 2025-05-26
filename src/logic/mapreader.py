@@ -51,30 +51,24 @@ class AsciiKartta:
 
     #reitinhaun hyödyntämät metodit - algoritmikäyttöön
 
-    def hae_suunnat(self,x,y):
+    def hae_suunnat(self,x,y,suunnat=((0,-1,False),(1,0,False),(0,1,False),(-1,0,False),(1,-1,True),(1,1,True),(-1,1,True),(-1,-1,True))):
         # palauttaa kaikki suunnat joihin pisteestä x,y voi kulkea suoraan
         # listana jossa on uusien pisteiden koordinaatit ja matkojen pituudet (1 tai sqrt 2)
-        suunnat = []
+        palautetut_suunnat = []
 
-        # suorat järjestyksessä u r d l
-        for suunta in ((0,-1),(1,0),(0,1),(-1,0)):
+        # tutkitaan suunnat
+        for suunta in suunnat:
             tutkittava_piste = (x+suunta[0],y+suunta[1])
             if (-1 in tutkittava_piste or self.leveys == tutkittava_piste[0]
                 or self.korkeus == tutkittava_piste[1]):
                 continue
             if self.piste(tutkittava_piste) == ".":
-                suunnat.append((tutkittava_piste,1))
+                if suunta[2]:
+                    palautetut_suunnat.append((tutkittava_piste,sqrt(2)))
+                else:
+                    palautetut_suunnat.append((tutkittava_piste,1))
 
-        # kulmittaiset ur dr dl ul
-        for suunta in ((1,-1),(1,1),(-1,1),(-1,-1)):
-            tutkittava_piste = (x+suunta[0],y+suunta[1])
-            if (-1 in tutkittava_piste or self.leveys == tutkittava_piste[0]
-                or self.korkeus == tutkittava_piste[1]):
-                continue
-            if self.piste(tutkittava_piste[0],tutkittava_piste[1]) == ".":
-                suunnat.append((tutkittava_piste,1))
-
-        return suunnat
+        return palautetut_suunnat
 
     def vaihda_piste(self,x,y, char="*"):
         #vaihtaa pisteen arvon - oletuksena "*" jota käytetään vierailtuihin pisteisiin
