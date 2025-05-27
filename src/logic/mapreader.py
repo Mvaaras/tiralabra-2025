@@ -51,7 +51,7 @@ class AsciiKartta:
 
     #reitinhaun hyödyntämät metodit - algoritmikäyttöön
 
-    def hae_suunnat(self,x,y,suunnat=((0,-1,False),(1,0,False),(0,1,False),(-1,0,False),(1,-1,True),(1,1,True),(-1,1,True),(-1,-1,True))):
+    def hae_suunnat(self,x,y,suunnat=((0,-1),(1,0),(0,1),(-1,0),(1,-1),(1,1),(-1,1),(-1,-1))):
         # palauttaa kaikki suunnat joihin pisteestä x,y voi kulkea suoraan
         # listana jossa on uusien pisteiden koordinaatit ja matkojen pituudet (1 tai sqrt 2)
         palautetut_suunnat = []
@@ -63,12 +63,18 @@ class AsciiKartta:
                 or self.korkeus == tutkittava_piste[1]):
                 continue
             if self.piste(tutkittava_piste) == ".":
-                if suunta[2]:
+                if self.on_vino((suunta[0],suunta[1])):
                     palautetut_suunnat.append((tutkittava_piste,sqrt(2)))
                 else:
                     palautetut_suunnat.append((tutkittava_piste,1))
 
         return palautetut_suunnat
+
+    def on_vino(self, suunta):
+        if 0 in suunta:
+            return False
+        return True
+        
 
     def vaihda_piste(self,x,y, char="*"):
         #vaihtaa pisteen arvon - oletuksena "*" jota käytetään vierailtuihin pisteisiin

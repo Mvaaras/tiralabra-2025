@@ -52,25 +52,26 @@ class JPS:
             self.jonossa[tutkittava] = False
             x = tutkittava[0]
             y = tutkittava[1]
-
             #jos on saavutettu loppupiste, palautetaan löydetty reitti
             if tutkittava == self.loppu:
                 return self.palauta_reitti()
 
             #haetaan suunta josta tutkittava piste on peräisin. Jos suuntaa ei ole, kartta olettaa suunnan olevan "kaikki"
             hyppysuunnat = self.karsi_suunnat(self.hae_tulosuunta(self.edellinen[tutkittava], tutkittava),x,y)
+            print(hyppysuunnat)
+            print(tutkittava)
             for suunta in hyppysuunnat:
                 loydetyt_hypyt = self.hyppaa_eteenpain(suunta, tutkittava)
-            """for naapuri in naapurit:
-                naapuri_piste = naapuri[0]
-                naapuri_etaisyys = naapuri[1]
-                oletettu_etaisyys = self.lyhin_reitti_pisteeseen[tutkittava] + naapuri_etaisyys
-                try:
-                    etaisyys = self.lyhin_reitti_pisteeseen[naapuri_piste]
-                    if etaisyys > oletettu_etaisyys :
+                for hyppy in loydetyt_hypyt:
+                    naapuri_piste = hyppy
+                    naapuri_etaisyys = hyppy[1]*self.hae_etaisyys(tutkittava, hyppy, suunta)
+                    oletettu_etaisyys = self.lyhin_reitti_pisteeseen[tutkittava] + naapuri_etaisyys
+                    try:
+                        etaisyys = self.lyhin_reitti_pisteeseen[naapuri_piste]
+                        if etaisyys > oletettu_etaisyys :
+                            self.paivita_etaisyys(naapuri_piste,tutkittava,oletettu_etaisyys)
+                    except KeyError:
                         self.paivita_etaisyys(naapuri_piste,tutkittava,oletettu_etaisyys)
-                except KeyError:
-                    self.paivita_etaisyys(naapuri_piste,tutkittava,oletettu_etaisyys)"""
         return []
 
 
@@ -80,18 +81,68 @@ class JPS:
 
     def hyppaa_eteenpain(self, suunta, tutkittava):
         if 0 in suunta:
-            return self.hyppaa_eteenpain_vinoon(suunta, tutkittava)
-        return self.hyppaa_eteenpain_suoraan(suunta, tutkittava)
+            return self.hyppaa_eteenpain_suoraan(suunta, tutkittava)
+        return self.hyppaa_eteenpain_vinoon(suunta, tutkittava)
     
     def hyppaa_eteenpain_vinoon(self, suunta, tutkittava):
-        loydetyt_pisteet = []
-        loppu = False
         nykyinen_hyppypiste = tutkittava
         while True:
-            seuraava_piste = self.kartta.hae_suunnat(tutkittava[0],tutkittava[1],((suunta, True)))
+            seuraava_piste = self.kartta.hae_suunnat(nykyinen_hyppypiste[0],nykyinen_hyppypiste[1],[suunta])
             if not seuraava_piste:
                 break
-    #JATKA TÄSTÄ!!!!
+            print(seuraava_piste)
+            nykyinen_hyppypiste = seuraava_piste[0][0]
+            print(nykyinen_hyppypiste)
+            if nykyinen_hyppypiste == self.loppu:
+                return [nykyinen_hyppypiste]
+            suorat_suunnat = [(suunta[0],0),(0,suunta[1])]
+            for suora_suunta in suorat_suunnat:
+                if self.hyppaa_eteenpain_suoraan(suora_suunta, nykyinen_hyppypiste):
+                    return[nykyinen_hyppypiste]
+            if self.vino_pakotettu_naapuri(nykyinen_hyppypiste,suunta):
+                return [nykyinen_hyppypiste]
+        return []
+    
+    def hyppaa_eteenpain_suoraan(self, suunta, tutkittava):
+        nykyinen_hyppypiste = tutkittava
+        while True:
+            seuraava_piste = self.kartta.hae_suunnat(nykyinen_hyppypiste[0],nykyinen_hyppypiste[1],[suunta])
+            if not seuraava_piste:
+                break
+            nykyinen_hyppypiste = seuraava_piste[0][0]
+            if nykyinen_hyppypiste == self.loppu:
+                return [nykyinen_hyppypiste]
+            if self.suora_pakotettu_naapuri(nykyinen_hyppypiste, suunta):
+                return [nykyinen_hyppypiste]
+        return []
+    
+    def vino_pakotettu_naapuri(self, tutkittava, suunta):
+        tarkastettavat_pisteet = self.kartta.hae_suunnat(tutkittava[0],tutkittava[1],
+                                                         ((suunta[0]*(-1),0),
+                                                          (0,suunta[1]*(-1)),
+                                                          (suunta[0],suunta[1]*(-1)),
+                                                          (suunta[0]*(-1),suunta[1])))
+        if not (tutkittava[0]-suunta[0],tutkittava[1]) in tarkastettavat_pisteet:
+            if (tutkittava[0] - suunta[0],tutkittava[1]+suunta[1]) in tarkastettavat_pisteet:
+                return True
+        if not (tutkittava[0],tutkittava[1]-suunta[1]) in tarkastettavat_pisteet:
+            if (tutkittava[0] + suunta[0],tutkittava[1]-suunta[1]) in tarkastettavat_pisteet:
+                return True
+        return False
+    
+    def suora_pakotettu_naapuri(self, tutkittava, suunta):
+        tarkistettavat_suunnat = ((suunta[1],suunta[0]),
+                    (suunta[1]*(-1),suunta[0]*(-1)),
+                    (suunta[0]+(suunta[0]*suunta[1])*(1-abs(suunta[0])),suunta[1]+(suunta[0]*suunta[1])*abs(suunta[0])),
+                    (suunta[0]-(suunta[0]*suunta[1])*(1-abs(suunta[0])),suunta[1]-(suunta[0]*suunta[1])*abs(suunta[0])))
+        tarkastettavat_pisteet = self.kartta.hae_suunnat(tutkittava[0],tutkittava[1],tarkistettavat_suunnat)
+        if not (tutkittava[0]+tarkistettavat_suunnat[0][0],tutkittava[1]+tarkistettavat_suunnat[0][1]) in tarkastettavat_pisteet:
+            if (tutkittava[0]+tarkistettavat_suunnat[2][0],tutkittava[1]+tarkistettavat_suunnat[2][1]) in tarkastettavat_pisteet:
+                return True
+        if not (tutkittava[0]+tarkistettavat_suunnat[1][0],tutkittava[1]+tarkistettavat_suunnat[1][1]) in tarkastettavat_pisteet:
+            if (tutkittava[0]+tarkistettavat_suunnat[3][0],tutkittava[1]+tarkistettavat_suunnat[3][1]) in tarkastettavat_pisteet:
+                return True
+        return False
 
 
     def hae_tulosuunta(self, edellinen, piste):
@@ -107,18 +158,26 @@ class JPS:
         suunnat = []
         if suunta == "alku":
             # pisteet on lista pisteitä ja etäisyyksiä yksittäisestä pisteestä siihen
-            pisteet = self.kartta.hae_suunnat(x,y,((1,-1,True),(1,1,True),(-1,1,True),(-1,-1,True)))
+            pisteet = self.kartta.hae_suunnat(x,y,((1,-1),(1,1),(-1,1),(-1,-1)))
             for piste in pisteet:
                 suunnat.append(self.hae_tulosuunta((x,y),piste[0]))
             return suunnat
-        if not suunnat[0] == 0 and not suunnat[1] == 0:
-            pisteet = self.kartta.hae_suunnat(x,y,((suunta[0],0,False),(0,suunta[1],False),(suunta, True)))
+        if not suunta[0] == 0 and not suunta[1] == 0:
+            pisteet = self.kartta.hae_suunnat(x,y,((suunta[0],0),(0,suunta[1]),suunta))
             for piste in pisteet:
                 suunnat.append(self.hae_tulosuunta((x,y),piste[0]))
         else:
-            piste = self.kartta.hae_suunnat(x,y,((suunta,False)))[0]
+            piste = self.kartta.hae_suunnat(x,y,(suunta))[0]
             suunnat.append(self.hae_tulosuunta((x,y),piste[0]))
         return suunnat
+    
+    def hae_etaisyys(self, alku, loppu, suunta):
+        etaisyys = 0
+        matkaaja = alku
+        while not matkaaja == loppu:
+            etaisyys += 1
+            matkaaja = (matkaaja[0]+suunta[0], matkaaja[1]+suunta[1])
+        return etaisyys
     
     #muut apumetodit
 
