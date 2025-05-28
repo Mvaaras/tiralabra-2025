@@ -8,8 +8,9 @@ from .logic import mapreader as reader
 
 def main():
     kartta = reader.luo_polusta("src/assets/arena2.map",4)
-    """testi_astar = astar.AStar(kartta,(7,105),(235,177))"""
-    testi_jps = jps.JPS(kartta,(7,105),(235,177))
+    helppokartta = reader.luo_polusta("src/tests/testassets/testmap.map",20)
+    testi_astar = astar.AStar(kartta,(7,105),(235,177))
+    testi_jps = jps.JPS(kartta,(0,0),(0,0))
 
     ui.run_ui(testi_jps)
 

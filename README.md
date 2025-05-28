@@ -20,9 +20,9 @@ Vertailen kahta reitinhakualgoritmia.
 
 
 
-Tällä hetkellä A* algoritmia saa visualisoitua ajamalla:
+Tällä hetkellä Kartan saa ladattua:
 
 `poetry shell
 python -m src.index `
 
-Tämän jälkeen aloitus-ja lopetuspisteitä voi vaihtaa kartalla klikkaamalla hiiren oikealla ja vasemmalla näppäimellä.
+EN SUOSITTELE KLIKKAAMAAN KARTTAA juuri nyt. Testaan sillä JPS algoritmia ja nykyisessä muodossa se kaatoi minun koneen :)

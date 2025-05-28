@@ -59,8 +59,8 @@ class AsciiKartta:
         # tutkitaan suunnat
         for suunta in suunnat:
             tutkittava_piste = (x+suunta[0],y+suunta[1])
-            if (-1 in tutkittava_piste or self.leveys == tutkittava_piste[0]
-                or self.korkeus == tutkittava_piste[1]):
+            if (tutkittava_piste[0] < 0 or tutkittava_piste[1] < 0 or 
+                self.leveys <= tutkittava_piste[0] or self.korkeus <= tutkittava_piste[1]):
                 continue
             if self.piste(tutkittava_piste) == ".":
                 if self.on_vino((suunta[0],suunta[1])):
