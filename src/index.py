@@ -12,7 +12,7 @@ def main():
     testi_astar = astar.AStar(kartta,(7,105),(235,177))
     testi_jps = jps.JPS(kartta,(0,0),(0,0))
 
-    ui.run_ui(testi_jps)
+    ui.run_ui(testi_astar)
 
 if __name__ == "__main__":
     main()

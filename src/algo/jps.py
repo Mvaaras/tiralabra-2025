@@ -129,18 +129,18 @@ class JPS:
         for piste in self.kartta.hae_suunnat(tutkittava[0],tutkittava[1],tarkistettavat_suunnat):
             tarkistettavat_pisteet.append(piste[0])
         if not (tutkittava[0]+tarkistettavat_suunnat[0][0],tutkittava[1]+tarkistettavat_suunnat[0][1]) in tarkistettavat_pisteet:
-            if (tutkittava[0]+tarkistettavat_suunnat[2][0],tutkittava[1]+tarkistettavat_suunnat[2][1]) in tarkistettavat_pisteet:
+            if (tutkittava[0]+tarkistettavat_suunnat[3][0],tutkittava[1]+tarkistettavat_suunnat[3][1]) in tarkistettavat_pisteet:
                 return True
         if not (tutkittava[0]+tarkistettavat_suunnat[1][0],tutkittava[1]+tarkistettavat_suunnat[1][1]) in tarkistettavat_pisteet:
-            if (tutkittava[0]+tarkistettavat_suunnat[3][0],tutkittava[1]+tarkistettavat_suunnat[3][1]) in tarkistettavat_pisteet:
+            if (tutkittava[0]+tarkistettavat_suunnat[2][0],tutkittava[1]+tarkistettavat_suunnat[2][1]) in tarkistettavat_pisteet:
                 return True
         return False
     
     def hae_pakotetut_vinot_esteet(self, suunta):
-        return [(suunta[0],0),(0,suunta[1])]
+        return [(0-suunta[0],suunta[1]-suunta[1]),(suunta[0]-suunta[0],0-suunta[1])]
 
     def hae_pakotetut_vinot_naapurit(self,suunta):
-        return [(suunta[0]*2,0),(0,suunta[1]*2)]
+        return [(suunta[0]*2-suunta[0],0-suunta[1]),(0-suunta[0],suunta[1]*2-suunta[1])]
     
     def suora_pakotettu_naapuri(self, tutkittava, suunta):
         tarkistettavat_suunnat = []
@@ -182,21 +182,29 @@ class JPS:
         y = piste[1]
         return (x-edellinen_x,y-edellinen_y)
 
-    def karsi_suunnat(self, suunta,x,y):
+    def karsi_suunnat(self, edellinen_suunta,x,y):
         suunnat = []
-        if suunta == "alku":
+        if edellinen_suunta == "alku":
             # pisteet on lista pisteitä ja etäisyyksiä yksittäisestä pisteestä siihen
-            pisteet = self.kartta.hae_suunnat(x,y,((1,-1),(1,1),(-1,1),(-1,-1)))
+            pisteet = self.kartta.hae_suunnat(x,y)
             for piste in pisteet:
                 suunnat.append(self.hae_tulosuunta((x,y),piste[0]))
             return suunnat
-        if not suunta[0] == 0 and not suunta[1] == 0:
-            pisteet = self.kartta.hae_suunnat(x,y,((suunta[0],0),(0,suunta[1]),suunta))
+        if not 0 in edellinen_suunta:
+            pisteet = self.kartta.hae_suunnat(x,y,((edellinen_suunta[0],0),(0,edellinen_suunta[1]),edellinen_suunta))
             for piste in pisteet:
                 suunnat.append(self.hae_tulosuunta((x,y),piste[0]))
+            if self.vino_pakotettu_naapuri((x,y),edellinen_suunta):
+                naapuri_pisteet = self.kartta.hae_suunnat(x,y,self.hae_pakotetut_vinot_naapurit(edellinen_suunta))
+                for naapuri_piste in naapuri_pisteet:
+                    suunnat.append(self.hae_tulosuunta(naapuri_piste[0],(x,y)))
         else:
-            piste = self.kartta.hae_suunnat(x,y,(suunta))[0]
+            piste = self.kartta.hae_suunnat(x,y,(edellinen_suunta))[0]
             suunnat.append(self.hae_tulosuunta((x,y),piste[0]))
+            if self.suora_pakotettu_naapuri((x,y), edellinen_suunta):
+                pisteet = self.kartta.hae_suunnat(x,y,self.hae_pakotetut_suorat_naapurit(edellinen_suunta))
+                for piste in pisteet:
+                    suunnat.append(self.hae_tulosuunta(piste[0],(x,y)))
         return suunnat
     
     def hae_etaisyys(self, alku, loppu, suunta):
