@@ -27,4 +27,4 @@ Tällä hetkellä kartan saa ladattua (kun projekti asennettu poetryllä):
 `poetry shell
 python -m src.index `
 
-Karttaa klikkaamalla pääsee testaamaan A* algoa. JPS testaamista ja koodin sörkkimistä en suosittele koska viimeksi kun yritin, tämä nykyinen versio onnistui kaatamaan minun koko koneen.
+Karttaa klikkaamalla pääsee testaamaan JPS algoa. Aloitus- ja lopetuspisteet saa valittua klikkaamalla hiiren vasemmalla ja oikealla, ja visualisaattori näyttää algoritmin löytämät hyppypisteet. Täysin bugiton tämä ei vielä ole, mutta pitäisi toimia!
