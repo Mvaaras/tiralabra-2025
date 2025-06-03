@@ -1,6 +1,7 @@
 import unittest
 from algo.jps import JPS
 from logic.mapreader import luo_polusta
+from math import sqrt
 
 class TestAStar(unittest.TestCase):
     def setUp(self):
@@ -97,6 +98,9 @@ class TestAStar(unittest.TestCase):
         self.assertEqual(self.jps_h.hae_tulosuunta((5,10),(4,9)),(-1,-1))
         self.assertEqual(self.jps_h.hae_tulosuunta("alku",(0,0)),"alku")
 
+        self.assertEqual(self.jps_h.hae_tulosuunta((7,10),(12,15)),(1,1))
+        self.assertEqual(self.jps_h.hae_tulosuunta((200,10),(500,10)),(1,0))
+
     def test_karsi_suunnat_palauttaa_alkusuunnat_kun_alku(self):
         self.assertEqual(self.jps_h.karsi_suunnat("alku",1,1),[(1,0),(1,1)])
         self.assertEqual(self.jps_h.karsi_suunnat("alku",2,7),[(1,0),(-1,0),(1,-1),(-1,-1)])
@@ -104,19 +108,46 @@ class TestAStar(unittest.TestCase):
         self.assertEqual(self.jps_h.karsi_suunnat("alku",0,5),[(0,-1),(0,1),(1,1)])
 
     def test_karsi_suunnat_palauttaa_suunnat_kun_suunta(self):
-        self.assertEqual(self.jps_h.karsi_suunnat((1,1),2,2),[(1,0),(0,1),(-1,1)])
+        self.assertEqual(self.jps_h.karsi_suunnat((1,1),2,2),[(1,0),(0,1),(1,-1),(-1,1)])
         self.assertEqual(self.jps_h.karsi_suunnat((-1,1),4,1),[(-1,0),(0,1),(-1,1)])
-        self.assertEqual(self.jps_h.karsi_suunnat((-1,0),4,26),[(-1,0),(-1,1)])
+        self.assertEqual(self.jps_h.karsi_suunnat((-1,0),3,7),[(-1,0)])
+        self.assertEqual(self.jps_h.karsi_suunnat((-1,0),2,7),[(-1,0),(-1,-1)])
     
 
-    """def test_jps_palauttaa_tyhjan_listan_kun_reittia_ei_ole(self):
+    def test_jps_palauttaa_tyhjan_listan_kun_reittia_ei_ole(self):
         self.jps_h.vaihda_alku(1,1)
         self.jps_h.vaihda_loppu((4,4))
-        self.assertEqual(self.jps_h.aloita_jps(),[])"""
+        self.assertEqual(self.jps_h.aloita_jps(),[])
+    
+    def test_valiaikainen_debuggaus_testi(self):
+        self.jps_h.vaihda_alku(1,1)
+        self.jps_h.vaihda_loppu(4,1)
+        self.assertEqual(self.jps_h.hae_tulosuunta("alku", (1,1)),"alku")
+        self.assertEqual(self.jps_h.karsi_suunnat("alku",1,1),[(1,0),(1,1)])
+        self.assertEqual(self.jps_h.hyppaa_eteenpain((1,0),(1,1)),[(4,1)])
+        self.assertEqual(self.jps_h.hae_etaisyys((1,1), (4,1), (1,0)),3)
+        self.assertEqual(self.jps_h.hyppaa_eteenpain((1,1),(1,1)),[(4,1),(2,2)])
+        self.assertEqual(self.jps_h.hae_etaisyys((1,1), (2,2), (1,1)),sqrt(2))
+        try:
+            etaisyys = self.jps_h.lyhin_reitti_pisteeseen[(4,1)]
+            if etaisyys > 3 :
+                self.jps_h.paivita_etaisyys((4,1),(1,1),3)
+        except KeyError:
+            self.jps_h.paivita_etaisyys((4,1),(1,1),3)
+        try:
+            etaisyys = self.jps_h.lyhin_reitti_pisteeseen[(2,2)]
+            if etaisyys > 3 :
+                self.jps_h.paivita_etaisyys((2,2),(1,1),sqrt(2))
+        except KeyError:
+            self.jps_h.paivita_etaisyys((2,2),(1,1),sqrt(2))
+        self.assertEqual(self.jps_h.jono.get(),(3.0,(4,1)))
+        self.assertEqual(self.jps_h.jono.get(),(3.6502815398728847,(2,2)))
+        self.assertEqual(self.jps_h.hae_tulosuunta((1,1), (4,1)),(1,0))
+        
 
-    """def test_jps_palauttaa_reitin_kun_sellainen_on(self):
+    def test_jps_palauttaa_reitin_kun_sellainen_on(self):
         self.jps_h.vaihda_alku(1,1)
         self.jps_h.vaihda_loppu(4,1)
         self.assertEqual(isinstance(self.jps_h.aloita_jps(),list), True)
         self.assertNotEqual(self.jps_h.aloita_jps(),[])
-        self.assertEqual(self.jps_h.aloita_jps(),[])"""
+        self.assertEqual(self.jps_h.aloita_jps(),[(1,1),(1,4)])

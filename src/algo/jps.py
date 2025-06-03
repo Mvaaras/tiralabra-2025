@@ -180,7 +180,11 @@ class JPS:
         edellinen_y = edellinen[1]
         x = piste[0]
         y = piste[1]
-        return (x-edellinen_x,y-edellinen_y)
+        return self.normalisoi_suunta((x-edellinen_x,y-edellinen_y))
+    
+    def normalisoi_suunta(self, suunta):
+        return ((suunta[0] > 0) - (suunta[0] < 0),(suunta[1] > 0) - (suunta[1] < 0))
+
 
     def karsi_suunnat(self, edellinen_suunta,x,y):
         suunnat = []
@@ -197,20 +201,20 @@ class JPS:
             if self.vino_pakotettu_naapuri((x,y),edellinen_suunta):
                 naapuri_pisteet = self.kartta.hae_suunnat(x,y,self.hae_pakotetut_vinot_naapurit(edellinen_suunta))
                 for naapuri_piste in naapuri_pisteet:
-                    suunnat.append(self.hae_tulosuunta(naapuri_piste[0],(x,y)))
+                    suunnat.append(self.hae_tulosuunta((x,y),naapuri_piste[0]))
         else:
-            piste = self.kartta.hae_suunnat(x,y,(edellinen_suunta))[0]
+            piste = self.kartta.hae_suunnat(x,y,[edellinen_suunta])[0]
             suunnat.append(self.hae_tulosuunta((x,y),piste[0]))
             if self.suora_pakotettu_naapuri((x,y), edellinen_suunta):
                 pisteet = self.kartta.hae_suunnat(x,y,self.hae_pakotetut_suorat_naapurit(edellinen_suunta))
                 for piste in pisteet:
-                    suunnat.append(self.hae_tulosuunta(piste[0],(x,y)))
+                    suunnat.append(self.hae_tulosuunta((x,y),piste[0]))
         return suunnat
     
     def hae_etaisyys(self, alku, loppu, suunta):
         etaisyys = 0
         matkaaja = alku
-        while not matkaaja == loppu:
+        while not matkaaja == loppu and etaisyys < 2*max(self.kartta.korkeus,self.kartta.leveys):
             etaisyys += 1
             matkaaja = (matkaaja[0]+suunta[0], matkaaja[1]+suunta[1])
         if 0 in suunta:

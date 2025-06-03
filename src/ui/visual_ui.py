@@ -55,7 +55,7 @@ def run_ui(algo):
                 if napit[2]:
                     algo.vaihda_loppu(oikea_x,oikea_y)
                     kartta.flush()
-                reitti = algo.aloita_astar()
+                reitti = algo.aloita_jps()
                 piirra_reitti(kartta,reitti)
 
 
