@@ -2,7 +2,7 @@
 
 [Määrittelydokumentti](/documentation/Maarittely.md)
 
-Toteutusdokumentti
+[Toteutusdokumentti](/documentation/Toteutus.md)
 
 [Testausdokumentti](/documentation/Testaus.md)
 
@@ -13,6 +13,8 @@ Toteutusdokumentti
 [Viikko 2](documentation/Viikkoraportit/Viikko2.pdf)
 
 [Viikko 3](documentation/Viikkoraportit/Viikko3.pdf)
+
+[Viikko 4](documentation/Viikkoraportit/Viikko3.pdf)
 
 # Projektista
 
