@@ -6,7 +6,9 @@ OLETUSVARIT = {
     "@":"black",
     ".":"white",
     "T":"gray40",
-    "*":"red"
+    "*":"red",
+    "V":"cyan",
+    "E":"darkorchid4"
 }
 VIRHE_PISTE_TYYPPI = "Yritettiin hakea koordinaatteja muilla kuin tuplella tai kahdella int"
 

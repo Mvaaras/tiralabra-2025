@@ -30,8 +30,8 @@ def ui_testaus():
         pygame.display.flip() 
         clock.tick(60)  
 
-def run_ui(algo):
-    kartta = algo.kartta
+def run_ui(algo,debug=False):
+    kartta = algo.kartta()
     pixel_size = kartta.pikselikoko
     pygame.init()
 
@@ -48,6 +48,7 @@ def run_ui(algo):
                 x, y =  pygame.mouse.get_pos()
                 oikea_x = x // pixel_size
                 oikea_y = y // pixel_size
+                if debug: print(str(oikea_x),str(oikea_y))
                 napit = pygame.mouse.get_pressed()
                 if napit[0]:
                     algo.vaihda_alku(oikea_x,oikea_y)
@@ -55,8 +56,10 @@ def run_ui(algo):
                 if napit[2]:
                     algo.vaihda_loppu(oikea_x,oikea_y)
                     kartta.flush()
-                reitti = algo.aloita_jps()
+                reitti = algo.aloita_algo()
+                piirra_reitti(kartta, algo.palauta_vieraillut(),"V")
                 piirra_reitti(kartta,reitti)
+                piirra_reitti(kartta, algo.palauta_extra(),"E")
 
 
         screen.fill("white")
@@ -70,8 +73,8 @@ def run_ui(algo):
         pygame.display.flip() 
         clock.tick(60)
 
-def piirra_reitti(kartta,reitti):
+def piirra_reitti(kartta,reitti,vaihdettava="*"):
     for point in reitti:
         x = point[0]
         y = point[1]
-        kartta.vaihda_piste(x,y)
+        kartta.vaihda_piste(x,y,vaihdettava)

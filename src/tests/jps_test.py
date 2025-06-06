@@ -61,7 +61,7 @@ class TestAStar(unittest.TestCase):
 
 
     def test_jps_palauttaa_tyhjan_listan_kun_reitti_aloitetaan_epasopivasta_paikasta(self):
-        self.assertEqual(self.jps_h.aloita_jps(),[])
+        self.assertEqual(self.jps_h.aloita_jps()["reitti"],[])
 
     def test_hyppaa_eteenpain_suoraan_palauttaa_tyhjan_listan_kun_hyppypisteita_ei_loydy(self):
         self.assertEqual(self.jps_h.hyppaa_eteenpain_suoraan((-1,0),(4,1)),[])
@@ -83,7 +83,6 @@ class TestAStar(unittest.TestCase):
     def test_hyppaa_eteenpain_vinoon_palauttaa_loppupisteen_kun_loppupiste(self):
         self.jps_h.vaihda_loppu(4,1)
         self.assertEqual(self.jps_h.hyppaa_eteenpain_vinoon((1,-1),(3,2)),[(4,1)])
-        self.assertEqual(self.jps_h.hyppaa_eteenpain_vinoon((1,1),(1,1)),[(4,1),(2,2)])
         self.jps_h.vaihda_loppu(2,2)
         self.assertEqual(self.jps_h.hyppaa_eteenpain_vinoon((1,1),(1,1)),[(2,2)])
 
@@ -117,37 +116,12 @@ class TestAStar(unittest.TestCase):
     def test_jps_palauttaa_tyhjan_listan_kun_reittia_ei_ole(self):
         self.jps_h.vaihda_alku(1,1)
         self.jps_h.vaihda_loppu((4,4))
-        self.assertEqual(self.jps_h.aloita_jps(),[])
-    
-    def test_valiaikainen_debuggaus_testi(self):
-        self.jps_h.vaihda_alku(1,1)
-        self.jps_h.vaihda_loppu(4,1)
-        self.assertEqual(self.jps_h.hae_tulosuunta("alku", (1,1)),"alku")
-        self.assertEqual(self.jps_h.karsi_suunnat("alku",1,1),[(1,0),(1,1)])
-        self.assertEqual(self.jps_h.hyppaa_eteenpain((1,0),(1,1)),[(4,1)])
-        self.assertEqual(self.jps_h.hae_etaisyys((1,1), (4,1), (1,0)),3)
-        self.assertEqual(self.jps_h.hyppaa_eteenpain((1,1),(1,1)),[(4,1),(2,2)])
-        self.assertEqual(self.jps_h.hae_etaisyys((1,1), (2,2), (1,1)),sqrt(2))
-        try:
-            etaisyys = self.jps_h.lyhin_reitti_pisteeseen[(4,1)]
-            if etaisyys > 3 :
-                self.jps_h.paivita_etaisyys((4,1),(1,1),3)
-        except KeyError:
-            self.jps_h.paivita_etaisyys((4,1),(1,1),3)
-        try:
-            etaisyys = self.jps_h.lyhin_reitti_pisteeseen[(2,2)]
-            if etaisyys > 3 :
-                self.jps_h.paivita_etaisyys((2,2),(1,1),sqrt(2))
-        except KeyError:
-            self.jps_h.paivita_etaisyys((2,2),(1,1),sqrt(2))
-        self.assertEqual(self.jps_h.jono.get(),(3.0,(4,1)))
-        self.assertEqual(self.jps_h.jono.get(),(3.6502815398728847,(2,2)))
-        self.assertEqual(self.jps_h.hae_tulosuunta((1,1), (4,1)),(1,0))
+        self.assertEqual(self.jps_h.aloita_jps()["reitti"],[])
         
 
     def test_jps_palauttaa_reitin_kun_sellainen_on(self):
         self.jps_h.vaihda_alku(1,1)
         self.jps_h.vaihda_loppu(4,1)
-        self.assertEqual(isinstance(self.jps_h.aloita_jps(),list), True)
-        self.assertNotEqual(self.jps_h.aloita_jps(),[])
-        self.assertEqual(self.jps_h.aloita_jps(),[(1,1),(1,4)])
+        self.assertEqual(isinstance(self.jps_h.aloita_jps(),dict), True)
+        self.assertNotEqual(self.jps_h.aloita_jps()["reitti"],[])
+        self.assertEqual(self.jps_h.aloita_jps()["hyppypisteet"],[(1,1),(4,1)])

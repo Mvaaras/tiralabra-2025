@@ -3,6 +3,8 @@
 from math import sqrt
 from queue import PriorityQueue
 
+TOSI_ISO_LUKU = 100000000
+
 class JPS:
     def __init__(self, kartta,alku=(0,0),loppu=(0,0)):
         self.alku = alku
@@ -12,6 +14,8 @@ class JPS:
         self.lyhin_reitti_pisteeseen = {}
         self.jonossa = {}
         self.jono = PriorityQueue()
+        self.reittidata = {}
+        self.kaikki_vieraillut_pisteet = set()
 
     def vaihda_alku(self,x,y=None):
         self.alku = self._tarkista_piste(x,y)
@@ -32,12 +36,18 @@ class JPS:
         self.lyhin_reitti_pisteeseen = {self.alku:0}
         self.jono = PriorityQueue()
         self.jono.put((self.minimietaisyys(self.alku),self.alku))
+
+        self.kaikki_vieraillut_pisteet = set()
+        self.kaikki_vieraillut_pisteet.add(self.alku)
         self.jonossa = {self.alku:True}
+        self.reittidata = {"reitti":[],
+                           "vieraillut":self.kaikki_vieraillut_pisteet,
+                           "pituus":TOSI_ISO_LUKU}
 
         #tarkistetaan ettei aloiteta tai lopeteta seinän sisään.
         if (self.kartta.piste(self.alku) != "."
             or self.kartta.piste(self.loppu) != "."):
-            return []
+            return self.reittidata
 
         return self.jps()
 
@@ -49,6 +59,7 @@ class JPS:
 
             #muuttujaan "tutkittava" tallennetaan ainoastaan piste.
             tutkittava = self.jono.get()[1]
+            self.kaikki_vieraillut_pisteet.add(tutkittava)
             self.jonossa[tutkittava] = False
             x = tutkittava[0]
             y = tutkittava[1]
@@ -70,12 +81,13 @@ class JPS:
                             self.paivita_etaisyys(naapuri_piste,tutkittava,oletettu_etaisyys)
                     except KeyError:
                         self.paivita_etaisyys(naapuri_piste,tutkittava,oletettu_etaisyys)
-        return []
+        return self.reittidata
+        
 
 
     #apumetodeja joita varsinainen algo kutsuu.
 
-    #nimenomaan jps varten luodut metodit ensin, nämä tässä ovat vielä työn alla
+    #nimenomaan jps varten luodut metodit ensin
 
     def hyppaa_eteenpain(self, suunta, tutkittava):
         if 0 in suunta:
@@ -86,17 +98,14 @@ class JPS:
         nykyinen_hyppypiste = tutkittava
         loydetyt_suunnat = []
         suorat_suunnat = [(suunta[0],0),(0,suunta[1])]
-        for suora_suunta in suorat_suunnat:
-            loydetyt_suorat_hypyt = self.hyppaa_eteenpain_suoraan(suora_suunta, nykyinen_hyppypiste)
-            loydetyt_suunnat.extend(loydetyt_suorat_hypyt)
         while True:
             seuraava_piste = self.kartta.hae_suunnat(nykyinen_hyppypiste[0],nykyinen_hyppypiste[1],[suunta])
             if not seuraava_piste:
                 break
             nykyinen_hyppypiste = seuraava_piste[0][0]
+            self.kaikki_vieraillut_pisteet.add(nykyinen_hyppypiste)
             if nykyinen_hyppypiste == self.loppu:
-                loydetyt_suunnat.append(nykyinen_hyppypiste)
-                break
+                return[nykyinen_hyppypiste]
             for suora_suunta in suorat_suunnat:
                 if self.hyppaa_eteenpain_suoraan(suora_suunta, nykyinen_hyppypiste):
                     loydetyt_suunnat.append(nykyinen_hyppypiste)
@@ -113,6 +122,7 @@ class JPS:
             if not seuraava_piste:
                 break
             nykyinen_hyppypiste = seuraava_piste[0][0]
+            self.kaikki_vieraillut_pisteet.add(nykyinen_hyppypiste)
             if nykyinen_hyppypiste == self.loppu:
                 return[nykyinen_hyppypiste]
             if self.suora_pakotettu_naapuri(nykyinen_hyppypiste, suunta):
@@ -203,6 +213,8 @@ class JPS:
                 for naapuri_piste in naapuri_pisteet:
                     suunnat.append(self.hae_tulosuunta((x,y),naapuri_piste[0]))
         else:
+            haettu_suunta = self.kartta.hae_suunnat(x,y,[edellinen_suunta])
+            if not haettu_suunta: return suunnat
             piste = self.kartta.hae_suunnat(x,y,[edellinen_suunta])[0]
             suunnat.append(self.hae_tulosuunta((x,y),piste[0]))
             if self.suora_pakotettu_naapuri((x,y), edellinen_suunta):
@@ -214,7 +226,7 @@ class JPS:
     def hae_etaisyys(self, alku, loppu, suunta):
         etaisyys = 0
         matkaaja = alku
-        while not matkaaja == loppu and etaisyys < 2*max(self.kartta.korkeus,self.kartta.leveys):
+        while not matkaaja == loppu:
             etaisyys += 1
             matkaaja = (matkaaja[0]+suunta[0], matkaaja[1]+suunta[1])
         if 0 in suunta:
@@ -242,10 +254,43 @@ class JPS:
         return sqrt(x_etaisyys**2+y_etaisyys**2)
 
     def palauta_reitti(self):
-        reitti = []
+        hyppypisteet = []
         piste = self.loppu
         while piste != "alku":
-            reitti.append(piste)
+            hyppypisteet.append(piste)
             piste = self.edellinen[piste]
-        reitti.reverse()
+        hyppypisteet.reverse()
+        self.reittidata["hyppypisteet"] = hyppypisteet
+        reitti = self.palauta_koko_reitti()
+        self.reittidata["reitti"] = reitti
+        return self.reittidata
+    
+    def palauta_koko_reitti(self):
+        hyppypisteet = self.reittidata["hyppypisteet"]
+        hyppypisteita = len(hyppypisteet)-1
+        reitti = []
+        reitin_pituus = 0
+        kulma = 1
+        for i in range(hyppypisteita):
+            matkaaja = hyppypisteet[i]
+            suunta = self.hae_tulosuunta(hyppypisteet[i],hyppypisteet[i+1])
+            if 0 in suunta:
+                kulma = 1
+            else:
+                kulma = sqrt(2)
+            kohde = hyppypisteet[i+1]
+            while True:
+                reitti.append(matkaaja)
+                reitin_pituus += kulma
+                matkaaja = (matkaaja[0]+suunta[0],matkaaja[1]+suunta[1])
+                if matkaaja == kohde:
+                    break
+        self.reittidata["pituus"] = reitin_pituus
         return reitti
+                
+
+    
+
+    
+    def aloita(self):
+        return self.aloita_jps()
