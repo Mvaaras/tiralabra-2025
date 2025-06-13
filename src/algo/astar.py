@@ -113,6 +113,7 @@ class AStar:
         reitti.reverse()
         self.reittidata["reitti"] = reitti
         self.reittidata["pituus"] = reitin_pituus
+        print(len(self.kaikki_vieraillut_pisteet))
         return self.reittidata
     
     def onko_kulmittainen(self,piste,edellinen):
@@ -125,3 +126,6 @@ class AStar:
     
     def aloita(self):
         return self.aloita_astar()
+
+    def palauta_nimi(self):
+        return "A*"

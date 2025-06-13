@@ -1,6 +1,12 @@
 class AlgoRajapinta:
-    def __init__(self, algo):
-        self.algo = algo
+    def __init__(self, algot):
+        if not isinstance(algot, list):
+            self.algot = [algot]
+        else:
+            self.algot = algot
+        self.kohta = 0
+        self.algo = self.algot[self.kohta]
+        self.maara = len(self.algot)
         self.data = []
 
     def aloita_algo(self):
@@ -30,3 +36,14 @@ class AlgoRajapinta:
         if "hyppypisteet" in self.data:
             return self.data["hyppypisteet"]
         return []
+    
+    def vaihda_kartta(self):
+        self.kohta += 1
+        if self.kohta >= self.maara:
+            self.kohta = 0
+        self.algo = self.algot[self.kohta]
+        self.vaihda_alku(0,0)
+        self.vaihda_loppu(0,0)
+
+    def nimi(self):
+        return self.algo.palauta_nimi()

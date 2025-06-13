@@ -103,7 +103,7 @@ class JPS:
             if not seuraava_piste:
                 break
             nykyinen_hyppypiste = seuraava_piste[0][0]
-            self.kaikki_vieraillut_pisteet.add(nykyinen_hyppypiste)
+            # self.kaikki_vieraillut_pisteet.add(nykyinen_hyppypiste)
             if nykyinen_hyppypiste == self.loppu:
                 return[nykyinen_hyppypiste]
             for suora_suunta in suorat_suunnat:
@@ -122,7 +122,7 @@ class JPS:
             if not seuraava_piste:
                 break
             nykyinen_hyppypiste = seuraava_piste[0][0]
-            self.kaikki_vieraillut_pisteet.add(nykyinen_hyppypiste)
+            # self.kaikki_vieraillut_pisteet.add(nykyinen_hyppypiste)
             if nykyinen_hyppypiste == self.loppu:
                 return[nykyinen_hyppypiste]
             if self.suora_pakotettu_naapuri(nykyinen_hyppypiste, suunta):
@@ -286,6 +286,7 @@ class JPS:
                 if matkaaja == kohde:
                     break
         self.reittidata["pituus"] = reitin_pituus
+        print(len(self.kaikki_vieraillut_pisteet))
         return reitti
                 
 
@@ -294,3 +295,6 @@ class JPS:
     
     def aloita(self):
         return self.aloita_jps()
+    
+    def palauta_nimi(self):
+        return "JPS"

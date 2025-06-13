@@ -12,7 +12,7 @@ def main():
     helppokartta = reader.luo_polusta("src/tests/testassets/testmap.map",20)
     testi_astar = astar.AStar(kartta,(0,0),(0,0))
     testi_jps = jps.JPS(kartta,(0,0),(0,0))
-    algo = algorajapinta.AlgoRajapinta(testi_astar)
+    algo = algorajapinta.AlgoRajapinta([testi_astar,testi_jps])
 
     ui.run_ui(algo, True)
 

@@ -14,7 +14,9 @@
 
 [Viikko 3](documentation/Viikkoraportit/Viikko3.pdf)
 
-[Viikko 4](documentation/Viikkoraportit/Viikko3.pdf)
+[Viikko 4](documentation/Viikkoraportit/Viikko4.pdf)
+
+[Viikko 5](documentation/Viikkoraportit/Viikko5.pdf)
 
 # Projektista
 
@@ -22,11 +24,18 @@
 
 Vertailen kahta reitinhakualgoritmia.
 
+---
 
+Tällä hetkellä projekti tulee ensin asentaa "poetry install"
 
-Tällä hetkellä kartan saa ladattua (kun projekti asennettu poetryllä):
+Tämän jälkeen kartan visualisaattorin voi avata komennolla 
 
-`poetry shell
-python -m src.index `
+`poetry run python -m src.index`
 
-Karttaa klikkaamalla pääsee testaamaan JPS algoa. Aloitus- ja lopetuspisteet saa valittua klikkaamalla hiiren vasemmalla ja oikealla, ja visualisaattori näyttää algoritmin löytämät hyppypisteet. Täysin bugiton tämä ei vielä ole, mutta pitäisi toimia!
+tai jos shell on käytössä, voit myös käyttää:
+
+`poetry shell`
+
+`python -m src.index`
+
+Visualisaattorissa pääsee testaamaan kumpaakin algoa - ylhäältä klikkaamalla sitä voi vaihtaa. Aloitus- ja lopetuspisteet saa valittua klikkaamalla karttaa hiiren vasemmalla ja oikealla, ja visualisaattori näyttää algoritmin löytämän reitin, sen tutkimat pisteet, sekä myös hyppypisteet kun kyseessä on JPS.
