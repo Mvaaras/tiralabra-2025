@@ -89,3 +89,13 @@ class AsciiKartta:
 
     def aseta_oletusvarit(self):
         self.varit = OLETUSVARIT
+    
+    #testauksen hyödyntävät metodit
+
+    def kaikki_kuljettavat_pisteet(self):
+        pisteet = []
+        for y in range(self.korkeus):
+            for x in range(self.leveys):
+                if self.karttadata[y][x] == ".":
+                    pisteet.append((x,y))
+        return pisteet

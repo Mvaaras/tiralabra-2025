@@ -32,12 +32,17 @@ class AlgoRajapinta:
             return []
         return self.data["vieraillut"]
     
+    def palauta_pituus(self):
+        if isinstance(self.data, list):
+            return None
+        return self.data["pituus"]
+    
     def palauta_extra(self):
         if "hyppypisteet" in self.data:
             return self.data["hyppypisteet"]
         return []
     
-    def vaihda_kartta(self):
+    def vaihda_algo(self):
         self.kohta += 1
         if self.kohta >= self.maara:
             self.kohta = 0

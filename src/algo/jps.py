@@ -286,7 +286,6 @@ class JPS:
                 if matkaaja == kohde:
                     break
         self.reittidata["pituus"] = reitin_pituus
-        print(len(self.kaikki_vieraillut_pisteet))
         return reitti
                 
 

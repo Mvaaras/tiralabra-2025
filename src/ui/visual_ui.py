@@ -37,7 +37,7 @@ def run_ui(algo,debug=False):
                         algo.vaihda_loppu(oikea_x,oikea_y)
                         kartta.flush()
                 else:
-                    algo.vaihda_kartta()
+                    algo.vaihda_algo()
                 reitti = algo.aloita_algo()
                 piirra_reitti(kartta, algo.palauta_vieraillut(),"V")
                 piirra_reitti(kartta,reitti)

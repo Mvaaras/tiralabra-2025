@@ -18,6 +18,8 @@
 
 [Viikko 5](documentation/Viikkoraportit/Viikko5.pdf)
 
+[Viikko 6](documentation/Viikkoraportit/Viikko6.pdf)
+
 # Projektista
 
 [Varmaan linkki yksityiskohtaisempiin käyttö-ohjeisiin. En ole vielä varma]
@@ -39,3 +41,7 @@ tai jos shell on käytössä, voit myös käyttää:
 `python -m src.index`
 
 Visualisaattorissa pääsee testaamaan kumpaakin algoa - ylhäältä klikkaamalla sitä voi vaihtaa. Aloitus- ja lopetuspisteet saa valittua klikkaamalla karttaa hiiren vasemmalla ja oikealla, ja visualisaattori näyttää algoritmin löytämän reitin, sen tutkimat pisteet, sekä myös hyppypisteet kun kyseessä on JPS.
+
+Lisäksi algoritmien aikavertailun voi suorittaa komennolla 
+
+`poetry run python -m src.index --testaa_ajat`
