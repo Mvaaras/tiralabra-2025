@@ -14,4 +14,4 @@
 - [Wikipedia - Jump point search](https://en.wikipedia.org/wiki/Jump_point_search) - Tiedonhaku
 - [https://zerowidth.com/2013/a-visual-explanation-of-jump-point-search/] - Tiedonhaku, suurin osa JPS koodista kirjoitettu tämän infon pohjalta
 - Kurssimateriaalit
-- **Laajoja kielimalleja** (ChatGPT) on ajoittain käytetty ongelmakohtien tarkasteluun ja bugien löytämiseen "kumiankkana" joka kykenee vastaamaan sekä erään matemaattisen ongelman ratkaisuun - kaikki koodi on kuitenkin kirjoitettu itse.
+- **Laajoja kielimalleja** (ChatGPT) on ajoittain käytetty ongelmakohtien tarkasteluun ja bugien löytämiseen "kumiankkana" joka kykenee vastaamaan, sekä erään matemaattisen ongelman ratkaisuun - kaikki koodi on kuitenkin kirjoitettu itse.

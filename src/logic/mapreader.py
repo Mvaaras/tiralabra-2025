@@ -61,7 +61,7 @@ class AsciiKartta:
         # tutkitaan suunnat
         for suunta in suunnat:
             tutkittava_piste = (x+suunta[0],y+suunta[1])
-            if (tutkittava_piste[0] < 0 or tutkittava_piste[1] < 0 or 
+            if (tutkittava_piste[0] < 0 or tutkittava_piste[1] < 0 or
                 self.leveys <= tutkittava_piste[0] or self.korkeus <= tutkittava_piste[1]):
                 continue
             if self.piste(tutkittava_piste) == ".":
@@ -76,7 +76,7 @@ class AsciiKartta:
         if 0 in suunta:
             return False
         return True
-        
+
 
     def vaihda_piste(self,x,y, char="*"):
         #vaihtaa pisteen arvon - oletuksena "*" jota käytetään vierailtuihin pisteisiin
@@ -89,7 +89,7 @@ class AsciiKartta:
 
     def aseta_oletusvarit(self):
         self.varit = OLETUSVARIT
-    
+
     #testauksen hyödyntävät metodit
 
     def kaikki_kuljettavat_pisteet(self):

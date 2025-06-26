@@ -87,20 +87,19 @@ class AStar:
     def paivita_etaisyys(self, piste, naapuri, etaisyys):
         self.edellinen[piste] = naapuri
         self.lyhin_reitti_pisteeseen[piste] = etaisyys
-        try:
-            if not self.jonossa[piste]:
-                self.lisaa_jonoon(piste,etaisyys)
-        except KeyError:
-            self.lisaa_jonoon(piste,etaisyys)
+        self.lisaa_jonoon(piste,etaisyys)
 
     def lisaa_jonoon(self, piste,etaisyys):
         self.jono.put((etaisyys+self.minimietaisyys(piste),piste))
         self.jonossa[piste] = True
 
     def minimietaisyys(self, a):
+        #heuristiikkafunktio
         x_etaisyys = abs(a[0]-self.loppu[0])
         y_etaisyys = abs(a[1]-self.loppu[1])
-        return sqrt(x_etaisyys**2+y_etaisyys**2)
+        diagonaalinen_etaisyys = min(x_etaisyys,y_etaisyys)
+        suora_etaisyys = max(x_etaisyys,y_etaisyys) - diagonaalinen_etaisyys
+        return diagonaalinen_etaisyys*sqrt(2)+suora_etaisyys
 
     def palauta_reitti(self):
         reitti = []
@@ -114,15 +113,16 @@ class AStar:
         self.reittidata["reitti"] = reitti
         self.reittidata["pituus"] = reitin_pituus
         return self.reittidata
-    
+
     def onko_kulmittainen(self,piste,edellinen):
-        if edellinen == "alku": return 0
+        if edellinen == "alku": 
+            return 0
         suunta = (piste[0]-edellinen[0],piste[1]-edellinen[1])
         if 0 in suunta:
             return 1
         return sqrt(2)
 
-    
+
     def aloita(self):
         return self.aloita_astar()
 

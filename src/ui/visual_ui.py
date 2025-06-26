@@ -28,8 +28,9 @@ def run_ui(algo,debug=False):
                 if y > YLAMENU_KORKEUS:
                     oikea_x = x // pixel_size
                     oikea_y = (y-YLAMENU_KORKEUS) // pixel_size
-                    if debug: print(str(oikea_x),str(oikea_y))
                     napit = pygame.mouse.get_pressed()
+                    if debug or not (napit[0] or napit[2]): 
+                        print(str(oikea_x),str(oikea_y))
                     if napit[0]:
                         algo.vaihda_alku(oikea_x,oikea_y)
                         kartta.flush()

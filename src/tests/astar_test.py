@@ -69,4 +69,8 @@ class TestAStar(unittest.TestCase):
         astar.vaihda_loppu(95,8)
         self.assertAlmostEqual(astar.aloita_astar()["pituus"],sqrt(2)*14+37)
         # näitä voisi lisätä että varmasti toimii
+        # (126, 140) pisteeseen (132, 34)
+        astar.vaihda_alku(126,140)
+        astar.vaihda_loppu(132,34)
+        self.assertAlmostEqual(round(astar.aloita_astar()["pituus"],3),146.309)
 
