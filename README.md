@@ -32,4 +32,4 @@ Tämän jälkeen kartan visualisaattorin voi avata komennolla
 
 `poetry run python -m src.index`
 
-Tarkemmat ohjeet [käyttöohjeista](documentation/Kayttoohje.md)
+Tarkemmat ohjeet ohjelman käyttöön voit lukea [käyttöohjeista](documentation/Kayttoohje.md)
