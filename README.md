@@ -22,9 +22,7 @@
 
 # Projektista
 
-[Varmaan linkki yksityiskohtaisempiin käyttö-ohjeisiin. En ole vielä varma]
-
-Vertailen kahta reitinhakualgoritmia.
+Projekti visualisoi ja vertailee kahta reitinhakualgoritmia - JPS ja A*. 
 
 ---
 
@@ -34,14 +32,4 @@ Tämän jälkeen kartan visualisaattorin voi avata komennolla
 
 `poetry run python -m src.index`
 
-tai jos shell on käytössä, voit myös käyttää:
-
-`poetry shell`
-
-`python -m src.index`
-
-Visualisaattorissa pääsee testaamaan kumpaakin algoa - ylhäältä klikkaamalla sitä voi vaihtaa. Aloitus- ja lopetuspisteet saa valittua klikkaamalla karttaa hiiren vasemmalla ja oikealla, ja visualisaattori näyttää algoritmin löytämän reitin, sen tutkimat pisteet, sekä myös hyppypisteet kun kyseessä on JPS.
-
-Lisäksi algoritmien aikavertailun voi suorittaa komennolla 
-
-`poetry run python -m src.index --testaa_ajat`
+Tarkemmat ohjeet [käyttöohjeista](documentation/Kayttoohje.md)
