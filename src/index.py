@@ -13,6 +13,8 @@ def main():
     parser = argparse.ArgumentParser(description="Käynnistysasetukset")
     parser.add_argument('--testaa_ajat', action='store_true',
                         help='Ajastustestit pääprojektin sijaan')
+    parser.add_argument('--tutki', action='store_true',
+                        help='Analyysitestit pääprojektin sijaan. Varoitus: Pitkäkestoinen')
 
     args = parser.parse_args()
 
@@ -24,6 +26,9 @@ def main():
     if args.testaa_ajat:
         pisteet = kartta.kaikki_kuljettavat_pisteet()
         aikavertailu(algo,pisteet)
+    if args.tutki:
+        pisteet = kartta.kaikki_kuljettavat_pisteet()
+        tutkimus(algo,pisteet)
     else:
         ui.run_ui(algo)
 
@@ -74,6 +79,33 @@ def aikavertailu_loppuraportti(virheet, nopeampi_astar,testit):
     print(f"JPS oli nopeampi kuin A* {jps_voittoprosentti}% testeistä", end =" ")
     print(f"({testit-nopeampi_astar} testissä)")
 
+def tutkimus(algo, pisteet):
+    testit = 500
+    astar_parit = []
+    jps_parit = []
+    for i in range(testit):
+        alku = pisteet[randint(0, len(pisteet))]
+        loppu = pisteet[randint(0, len(pisteet))]
+        algo.vaihda_alku(alku)
+        algo.vaihda_loppu(loppu)
+        aloitusaika = time.time()
+        algo.aloita_algo()
+        lopetusaika = time.time()
+        kokonaisaika = round(lopetusaika-aloitusaika,5)
+        tutkitut_pisteet = len(algo.palauta_vieraillut())
+        astar_parit.append((tutkitut_pisteet,kokonaisaika,algo.palauta_pituus()))
+        algo.vaihda_algo()
+        algo.vaihda_alku(alku)
+        algo.vaihda_loppu(loppu)
+        aloitusaika = time.time()
+        algo.aloita_algo()
+        lopetusaika = time.time()
+        kokonaisaika = round(lopetusaika-aloitusaika,5)
+        tutkitut_pisteet = len(algo.palauta_vieraillut())
+        jps_parit.append((tutkitut_pisteet, kokonaisaika,algo.palauta_pituus()))
+        algo.vaihda_algo()
+    print(astar_parit)
+    print(jps_parit)
 
 
 if __name__ == "__main__":
