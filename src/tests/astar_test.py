@@ -43,6 +43,15 @@ class TestAStar(unittest.TestCase):
         self.astar_h.vaihda_alku(1,1)
         self.astar_h.vaihda_loppu(4,6)
         self.assertEqual(self.astar_h.aloita_astar()["reitti"],[(1,1),(2,2),(1,3),(0,4),(0,5),(1,6),(2,7),(3,6),(4,6)])
+        #lisätään reittejä niin että kulkee kaikkiin suuntiin. Yllä oleva reitti kulkee suoraan alas ja oikealle
+        #sekä alaoikealle, alavasemmalle ja ylaoikealle
+        #joten lisätään sellaiset reittien testit jotka kulkevat vasemmalle, yläoikealle ja ylös
+        self.astar_h.vaihda_alku(0,5)
+        self.astar_h.vaihda_loppu(1,1)
+        self.assertEqual(self.astar_h.aloita_astar()["reitti"],[(0,5),(0,4),(1,3),(2,2),(1,1)])
+        self.astar_h.vaihda_alku(4,1)
+        self.astar_h.vaihda_loppu(1,1)
+        self.assertEqual(self.astar_h.aloita_astar()["reitti"],[(4,1),(3,1),(2,1),(1,1)])
 
     def test_astar_loytaa_perakkaisia_reitteja(self):
         self.astar_h.vaihda_alku(3,1)
@@ -50,7 +59,7 @@ class TestAStar(unittest.TestCase):
         self.assertEqual(self.astar_h.aloita_astar()["reitti"],[(3,1),(2,2),(2,3)])
         self.astar_h.vaihda_alku(1,7)
         self.astar_h.vaihda_loppu(0,3)
-        self.assertEqual(self.astar_h.aloita_astar()["reitti"],[(1,7),(1,6),(0,5),(0,4),(0,3)])
+        self.assertEqual(self.astar_h.aloita_astar()["reitti"],[(1,7),(0,6),(0,5),(0,4),(0,3)])
 
     def test_astar_loytaa_lyhyimman_reitin_pienella_kartalla(self):
         self.astar_h.vaihda_alku(3,1)

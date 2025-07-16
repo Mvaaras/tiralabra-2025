@@ -125,3 +125,14 @@ class TestAStar(unittest.TestCase):
         self.assertEqual(isinstance(self.jps_h.aloita_jps(),dict), True)
         self.assertNotEqual(self.jps_h.aloita_jps()["reitti"],[])
         self.assertEqual(self.jps_h.aloita_jps()["hyppypisteet"],[(1,1),(4,1)])
+
+    def test_jps_palauttaa_oikean_reitin(self):
+        self.jps_h.vaihda_alku(1,1)
+        self.jps_h.vaihda_loppu(4,6)
+        self.assertEqual(self.jps_h.aloita_jps()["reitti"],[(1,1),(2,2),(1,3),(0,4),(0,5),(1,6),(2,7),(3,6)])
+        self.jps_h.vaihda_alku(0,5)
+        self.jps_h.vaihda_loppu(1,1)
+        self.assertEqual(self.jps_h.aloita_jps()["reitti"],[(0,5),(0,4),(1,3),(2,2)])
+        self.jps_h.vaihda_alku(4,1)
+        self.jps_h.vaihda_loppu(1,1)
+        self.assertEqual(self.jps_h.aloita_jps()["reitti"],[(4,1),(3,1),(2,1)])
