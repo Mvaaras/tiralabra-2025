@@ -8,13 +8,13 @@
 
 A* on toteutettu läheisesti pseudokoodin mukaan. Jokainen hyppypiste voi löytää maksimissaan 8 eri suuntaa, ja tämä voi tapahtua maksimissaan niin pitkään kunnes loppupiste löydetään. Näin ollen huonoimmassa mahdollisessa tilanteessakin tämän tehokkuus on O(8^d). Vastaavasti JPS löytää maksimissaan 8 eri hyppysuuntaa jokaisesta uudesta löydetystä pisteestä, ja jos jokainen matkalla oleva piste on hyppypiste josta päädytään kartan vaikeuden vuoksi eri suuntiin, tämän huonoin mahdollinen tehokkuus on O(8^d). 500 testin tulosten pohjalta väittäisin, että kuvista näyttäisi siltä että tutkittujen pisteiden määrä on lineaarisesti verrannainen siihen aikaan, joka kullakin algoritmilla menee. (A* ensin, sitten JPS)
 
-![A* tutkittujen pisteiden määrä suhteessa aikaan](/images/astar_examined.png)
-![JPS tutkittujen pisteiden määrä suhteessa aikaan](/images/jps_examined.png)
+![A* tutkittujen pisteiden määrä suhteessa aikaan](https://raw.githubusercontent.com/Mvaaras/tiralabra-2025/refs/heads/main/documentation/images/astar_examined.png)
+![JPS tutkittujen pisteiden määrä suhteessa aikaan](https://github.com/Mvaaras/tiralabra-2025/blob/main/documentation/images/jps_examined.png)
 
 500 testin analyysin perusteella vaikuttaa myös siltä siltä, että ainakaan testattu kartta ei ollut lähelläkään huonointa mahdollista tilannetta. Jonkinlainen eksponentiaalinen kasvu tuossa näyttäisi syntyvän. O(d^2) on kuitenkin huomattavasti pienempi kuin huonoin mahdollinen tilanne.
 
-![A* reitin pituus suhteessa aikaan](/images/astar_pathlength.png)
-![JPS reitin pituus pisteiden määrä suhteessa aikaan](/images/jps_pathlength.png)
+![A* reitin pituus suhteessa aikaan](https://github.com/Mvaaras/tiralabra-2025/blob/main/documentation/images/astar_pathlength.png)
+![JPS reitin pituus pisteiden määrä suhteessa aikaan](https://github.com/Mvaaras/tiralabra-2025/blob/main/documentation/images/jps_pathlength.png)
 
 Näiden tulosten perusteella väittäisin myös että aikavaativuudet ovat samassa luokassa - aikatestien (ajettavissa itse index-tiedoston asetuksilla) ja rakenteen tutkimisen perusteella JPS vain on vähemmän tehokkaasti toteutettu, ja yksittäisiin hyppyihin kuluu niin paljon enemmän aikaa, että A* on yleensä nopeampi.
 
